@@ -1,2 +1,7 @@
-httpd_port: 8080
+# --- Default Variables for role_install_web ---
 
+# Defines the default port for the Apache (httpd) web server.
+# This variable can be overridden in higher precedence locations
+# (e.g., group_vars, host_vars, or playbook variables).
+# The original tasks file hardcoded port 80, but has been updated to use this variable.
+httpd_port: 8080
