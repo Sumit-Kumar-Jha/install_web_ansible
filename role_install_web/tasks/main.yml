@@ -1,34 +1,57 @@
 ---
+# --- Main Tasks for Apache (httpd) Installation and Configuration ---
+
+- name: Log start of web server installation
+  debug:
+    msg: "Starting the installation and configuration of the Apache (httpd) web server."
+
 - name: Install httpd
+  # Ensures that the httpd package (Apache Web Server) is installed.
+  # 'state: present' means the package will be installed if it's not already there.
   yum:
     name: httpd
     state: present
 
 - name: Start and enable httpd service
+  # Ensures the httpd service is running and set to start on system boot.
   service:
     name: httpd
     state: started
     enabled: yes
 
-- name: Allow HTTP traffic on port 80
+- name: Allow HTTP traffic on the configured port
+  # This task configures the system firewall (firewalld) to allow incoming TCP traffic
+  # on the port defined by the 'httpd_port' variable (default: 8080).
+  # 'permanent: yes' makes the rule persist across reboots.
+  # 'ignore_errors: yes' is used to prevent failures on systems without firewalld, but it can mask other issues.
   firewalld:
-    port: 80/tcp
+    port: "{{ httpd_port }}/tcp"
     permanent: yes
     state: enabled
   ignore_errors: yes
 
 - name: Reload firewall rules
+  # Applies the new firewall rules immediately without restarting the service.
+  # 'ignore_errors: yes' prevents the playbook from failing if firewalld is not running or installed.
   command: firewall-cmd --reload
   ignore_errors: yes
 
-- name: Update httpd to listen on port 80
+- name: Update httpd to listen on the configured port
+  # This task modifies the main Apache configuration file to listen on the port specified
+  # by the 'httpd_port' variable.
+  # It finds the line starting with 'Listen 80' and replaces it.
+  # If this change is made, it notifies the 'Restart httpd' handler.
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^Listen 80'
-    line: 'Listen 80'
+    line: 'Listen {{ httpd_port }}'
   notify: Restart httpd
 
 - name: Copy Jinja2 template for index.html
+  # Deploys a custom index.html file from a template.
+  # Jinja2 templates allow for dynamic content using variables.
+  # 'owner', 'group', and 'mode' set the file permissions correctly for the web server.
+  # If the content of the destination file changes, it notifies the 'Restart httpd' handler.
   template:
     src: index.html.j2
     dest: /var/www/html/index.html
@@ -37,3 +60,6 @@
     mode: '0644'
   notify: Restart httpd
 
+- name: Log completion of web server setup
+  debug:
+    msg: "Apache (httpd) web server installation and configuration is complete."

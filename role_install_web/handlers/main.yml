@@ -1,6 +1,15 @@
 ---
+# --- Handlers for the role_install_web role ---
+# Handlers are tasks that are only run when notified by other tasks.
+# They are typically used to restart services after configuration changes.
+
+- name: Log handler trigger for httpd restart
+  debug:
+    msg: "A configuration change was detected. Notifying httpd service to restart."
+
 - name: Restart httpd
+  # This handler is triggered by a 'notify' statement in a task if that task reports a 'changed' state.
+  # It ensures the httpd service is restarted to apply any configuration modifications.
   service:
     name: httpd
     state: restarted
-

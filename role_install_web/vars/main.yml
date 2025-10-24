@@ -1,2 +1,10 @@
 ---
-# vars file for role_install_web
+# --- Role Variables for role_install_web ---
+
+# This file is intended for defining variables specific to this role.
+# Variables defined in this file have a higher precedence than those in 'defaults/main.yml'.
+# They cannot be overridden by inventory variables (e.g., in group_vars or host_vars).
+#
+# Example:
+# package_name: httpd
+# service_name: httpd
