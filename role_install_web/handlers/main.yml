@@ -1,6 +1,59 @@
 ---
-- name: Restart httpd
-  service:
-    name: httpd
-    state: restarted
+# This YAML document represents a single Ansible task within a playbook.
+# Ansible uses YAML for defining its automation tasks, known as 'plays' and 'tasks'.
 
+# A list of tasks. In this case, there is only one task.
+-
+  # The 'name' keyword provides a human-readable description for the task.
+  # This name is displayed in the Ansible output when the playbook runs,
+  # making it easy to understand what operation is currently being performed
+  # and aids significantly in debugging and monitoring playbook execution.
+  name: Restart httpd
+
+  # The 'service' module is an Ansible core module designed to manage services
+  # on remote hosts. It provides a standardized way to interact with various
+  # service managers (like systemd, SysV init, upstart, launchd, etc.) across
+  # different operating systems (Linux distributions, macOS, BSD, etc.).
+  #
+  # Overall Architecture: Ansible operates by connecting to remote hosts
+  # (typically via SSH) and executing modules. These modules abstract away
+  # the complexities of underlying operating system commands and APIs,
+  # ensuring that playbooks are generally cross-platform and idempotent.
+  # The 'service' module is a prime example of this abstraction layer.
+  service:
+    # The 'name' parameter for the 'service' module specifies the exact
+    # name of the service that needs to be managed on the target host.
+    #
+    # Complex Logic: The 'service' module intelligently translates 'httpd'
+    # into the appropriate service command for the underlying operating system.
+    # For instance, on a RedHat-based system (RHEL, CentOS, Fedora) using systemd,
+    # it would likely translate to `systemctl restart httpd.service`. On a
+    # Debian-based system (Ubuntu, Debian) where Apache is typically named 'apache2',
+    # if this task were run, it would fail unless 'apache2' was specified here,
+    # or the playbook had logic to handle different service names based on OS.
+    # For this specific task, 'httpd' implies a RedHat-like environment or
+    # a system where the Apache service is indeed registered as 'httpd'.
+    name: httpd
+
+    # The 'state' parameter defines the desired operational state of the service.
+    #
+    # Purpose of 'state: restarted': This explicitly instructs the 'service' module
+    # to stop the specified service (if it's currently running) and then start it again.
+    # This action is typically performed when configuration files for a service
+    # have been changed and the service needs to reload those new configurations
+    # to become effective. A simple 'reload' state might be used if the service
+    # supports graceful reloading without downtime, but 'restarted' guarantees
+    # a full reinitialization.
+    #
+    # Idempotency Consideration (Complex Logic): While Ansible modules are generally
+    # idempotent (meaning running the same task multiple times produces the same
+    # result without unintended side effects), 'state: restarted' is a special case.
+    # When `state: restarted` is used, the service will be restarted *every time*
+    # this task is executed, even if the service is already running. This is because
+    # Ansible assumes that a previous task (e.g., templating a new configuration file)
+    # might have necessitated a full restart, and this task is explicitly designed
+    # to perform that restart, regardless of the current service status, to ensure
+    # new configurations are applied. If the goal were only to ensure the service
+    # is running, `state: started` would be used, which would only act if the
+    # service was not running.
+    state: restarted
