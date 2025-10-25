@@ -1,11 +1,30 @@
 galaxy_info:
+  # This top-level key is a dictionary that contains metadata about the Ansible role.
+  # It is primarily used by Ansible Galaxy (the community hub for Ansible roles) to categorize, display,
+  # and provide essential information to users who are searching for or evaluating roles.
+  # This section helps in the discovery, understanding, and proper usage of the role.
+
   author: your name
+  # Specifies the name of the individual or team who authored this Ansible role.
+  # This name will be displayed on the role's page on Ansible Galaxy, providing proper attribution.
+
   description: your role description
+  # A concise, human-readable summary of what the Ansible role does.
+  # This description is critical for users to quickly grasp the role's purpose and functionality.
+  # It should clearly articulate the primary problem the role solves or the task it performs.
+
   company: your company (optional)
+  # (Optional) Specifies the name of the company or organization associated with the role's author.
+  # This can provide additional context or branding for the role on Ansible Galaxy.
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
   # issue_tracker_url: http://example.com/issue/tracker
+  # (Optional) Provides a specific URL to the role's issue tracking system.
+  # If the role's source repository is hosted on GitHub, Ansible Galaxy typically infers the
+  # issue tracker URL automatically (e.g., `https://github.com/user/repo/issues`).
+  # This field is useful for roles hosted on other platforms or if a different issue tracker
+  # (like Jira, Bugzilla, etc.) is used.
 
   # Choose a valid license ID from https://spdx.org - some suggested licenses:
   # - BSD-3-Clause (default)
@@ -15,11 +34,25 @@ galaxy_info:
   # - Apache-2.0
   # - CC-BY-4.0
   license: license (GPL-2.0-or-later, MIT, etc)
+  # Specifies the software license under which this Ansible role is distributed.
+  # It is highly recommended to use a standard SPDX License Identifier (see https://spdx.org/licenses/)
+  # for clarity and machine readability. This informs users about their rights and obligations
+  # regarding the use, modification, and redistribution of the role, promoting legal compliance
+  # and open-source collaboration.
 
   min_ansible_version: 2.1
+  # Defines the minimum version of Ansible required to successfully execute this role.
+  # This is a crucial compatibility setting. If a user attempts to run the role with an
+  # Ansible version older than specified, the role might fail due to missing modules,
+  # deprecated features, or syntax incompatibilities. Ansible Galaxy and `ansible-galaxy install`
+  # commands use this information to warn users or prevent installation if their Ansible version is too old.
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
+  # (Optional) If the role was specifically designed to be used with Ansible Container
+  # (a tool for building container images using Ansible, which is now less commonly used
+  # in favor of other containerization tools), this field would specify the minimum
+  # required version of Ansible Container.
 
   #
   # Provide a list of supported platforms, and for each platform a list of versions.
@@ -38,6 +71,13 @@ galaxy_info:
   #   - 1.0
   #   - 7
   #   - 99.99
+  # (Optional) This field is a list of dictionaries, where each dictionary describes an
+  # operating system platform and its versions that this role officially supports and has been tested on.
+  # This information is primarily used by Ansible Galaxy for filtering and discovery, allowing users
+  # to find roles compatible with their specific target environments (e.g., "show me roles for CentOS 7").
+  # Each item requires a `name` (e.g., 'Ubuntu', 'CentOS', 'Debian') and a `versions` list.
+  # Using 'all' in the `versions` list indicates support for all versions of that platform.
+  # Providing accurate platform information enhances the role's reliability and usability.
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is a keyword that describes
@@ -46,7 +86,21 @@ galaxy_info:
     #
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
+  # (Optional) A list of single-word keywords or tags that describe the role's functionality,
+  # category, or domain. These tags are extremely important for role discoverability on Ansible Galaxy.
+  # Users frequently search for roles using tags like 'webserver', 'database', 'security', 'monitoring', 'networking', etc.
+  # Carefully chosen and relevant tags significantly increase the visibility and utility of the role
+  # to the wider Ansible community. Each tag must consist of alphanumeric characters only.
+  # If tags are added, replace the empty list `[]` with your actual list of tags, e.g., `[ 'webserver', 'nginx', 'proxy' ]`.
 
 dependencies: []
-  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
-  # if you add dependencies to this list.
+  # This top-level key defines a list of other Ansible roles that this role explicitly depends upon.
+  # When this role is installed using `ansible-galaxy install`, any roles listed here will also be
+  # automatically downloaded and installed, ensuring that all necessary prerequisites are met.
+  # This mechanism is fundamental for building modular and reusable Ansible content.
+  # Instead of creating monolithic roles, developers can compose functionality by having roles depend
+  # on smaller, focused roles (e.g., a 'webserver' role might depend on a 'common' role for basic system setup,
+  # or a 'firewall' role for network security).
+  # Each dependency can be specified either as a simple string (role name, assuming it's on Galaxy)
+  # or as a dictionary for more advanced options (e.g., specifying a particular version, a different source, or a git repository).
+  # If dependencies are added, replace the empty list `[]` with your actual list of dependencies.
